@@ -66,6 +66,64 @@
   .anim-cloche { display: inline-block; animation: secousse-cloche 0.5s ease 3; color: #d4af37; }
 </style>
 </body>
+<!-- SCRIPT DE SYNCHRONISATION CLOUD ADMIN - À PLACER JUSTE AVANT DE FERMER BODY -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const dbCloud = getDatabase(app);
+  const noeudSalon = ref(dbCloud, 'barber_pro_db');
+
+  let premierChargement = true;
+
+  window.addEventListener('load', () => {
+    if (typeof DB !== 'undefined') {
+      
+      // Surveillance en direct des rendez-vous clients
+      onValue(noeudSalon, (snapshot) => {
+        const donneesCloud = snapshot.val();
+        if (donneesCloud) {
+          let changementDetecte = false;
+
+          Object.keys(donneesCloud).forEach(cle => {
+            const localData = localStorage.getItem(cle);
+            const cloudDataStr = JSON.stringify(donneesCloud[cle]);
+            
+            if (localData !== cloudDataStr) {
+              localStorage.setItem(cle, cloudDataStr);
+              changementDetecte = true;
+            }
+          });
+
+          // Si un client réserve, on rafraîchit l'agenda de l'admin
+          if (changementDetecte && !premierChargement) {
+            if (typeof notifierAdmin === 'function') {
+              notifierAdmin("Nouveau rendez-vous reçu en direct !");
+            }
+            if (window.calendar && typeof window.calendar.refetchEvents === 'function') {
+              window.calendar.refetchEvents();
+            } else {
+              setTimeout(() => location.reload(), 1000);
+            }
+          }
+          premierChargement = false;
+        }
+      });
+
+      // Synchronisation immédiate des actions de l'admin (tarifs, blocages) vers le Cloud
+      DB.set = function(cle, valeur) {
+        localStorage.setItem(cle, JSON.stringify(valeur));
+        set(ref(dbCloud, 'barber_pro_db/' + cle), valeur);
+      };
+    }
+  });
+</script>
+
 <!-- SCRIPT DE SYNCHRONISATION CLOUD - À PLACER JUSTE AVANT DE FERMER BODY -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
