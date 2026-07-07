@@ -66,4 +66,43 @@
   .anim-cloche { display: inline-block; animation: secousse-cloche 0.5s ease 3; color: #d4af37; }
 </style>
 </body>
+<!-- SCRIPT DE SYNCHRONISATION CLOUD - À PLACER JUSTE AVANT DE FERMER BODY -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const dbCloud = getDatabase(app);
+  const noeudSalon = ref(dbCloud, 'barber_pro_db');
+
+  // On attend que l'application d'origine soit totalement chargée pour ne rien bloquer
+  window.addEventListener('load', () => {
+    if (typeof DB !== 'undefined') {
+      
+      // Récupération en arrière-plan des modifications Cloud
+      onValue(noeudSalon, (snapshot) => {
+        const donneesCloud = snapshot.val();
+        if (donneesCloud) {
+          Object.keys(donneesCloud).forEach(cle => {
+            localStorage.setItem(cle, JSON.stringify(donneesCloud[cle]));
+          });
+          // Si votre application possède une fonction pour rafraîchir l'écran, on l'exécute
+          if (typeof rafraichirInterfaceClient === 'function') rafraichirInterfaceClient();
+        }
+      });
+
+      // Interception transparente des réservations clients vers le Cloud
+      const ancienSet = DB.set;
+      DB.set = function(cle, valeur) {
+        localStorage.setItem(cle, JSON.stringify(valeur));
+        set(ref(dbCloud, 'barber_pro_db/' + cle), valeur);
+      };
+    }
+  });
+</script>
+
 </html>
