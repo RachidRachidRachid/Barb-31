@@ -1,9 +1,7 @@
-<!-- Intégration Firebase Temps Réel Admin - Configurée et prête à l'emploi -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // Connexion directe à votre base de données barber-pro-dz
   const firebaseConfig = {
     databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/"
   };
@@ -14,49 +12,52 @@
 
   let premierChargement = true;
 
-  // Réception en direct des rendez-vous pris par les clients
-  onValue(noeudSalon, (snapshot) => {
-    const donneesCloud = snapshot.val();
-    if (donneesCloud) {
-      let nouveauRendezVous = false;
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof DB !== 'undefined') {
+      
+      // Écoute temps réel des actions clients
+      onValue(noeudSalon, (snapshot) => {
+        const donneesCloud = snapshot.val();
+        if (donneesCloud) {
+          let nouveauRendezVous = false;
 
-      Object.keys(donneesCloud).forEach(cle => {
-        const localData = localStorage.getItem(cle);
-        const cloudDataStr = JSON.stringify(donneesCloud[cle]);
-        
-        if (localData !== cloudDataStr) {
-          localStorage.setItem(cle, cloudDataStr);
-          nouveauRendezVous = true;
+          Object.keys(donneesCloud).forEach(cle => {
+            const localData = localStorage.getItem(cle);
+            const cloudDataStr = JSON.stringify(donneesCloud[cle]);
+            
+            if (localData !== cloudDataStr) {
+              localStorage.setItem(cle, cloudDataStr);
+              nouveauRendezVous = true;
+            }
+          });
+
+          if (nouveauRendezVous && !premierChargement) {
+            if (typeof notifierAdmin === 'function') {
+              notifierAdmin("<i class='fa-solid fa-bell anim-cloche'></i> Synchro Temps Réel : Nouveau rendez-vous !");
+            }
+            setTimeout(() => location.reload(), 1000);
+          }
+          premierChargement = false;
         }
       });
 
-      // Alerte instantanée si un rendez-vous tombe pendant que l'admin regarde son écran
-      if (nouveauRendezVous && !premierChargement) {
-        if (typeof notifierAdmin === 'function') {
-          notifierAdmin("<i class='fa-solid fa-bell anim-cloche'></i> Nouveau rendez-vous enregistré en direct !");
-        }
-        
-        if (window.calendar && typeof window.calendar.refetchEvents === 'function') {
-          window.calendar.refetchEvents();
-        } else {
-          setTimeout(() => location.reload(), 1200);
-        }
-      }
-      premierChargement = false;
+      // Synchronisation vers le cloud lorsque l'admin modifie quelque chose
+      DB.set = function(cle, valeur) {
+        localStorage.setItem(cle, JSON.stringify(valeur));
+        set(ref(dbCloud, 'barber_pro_db/' + cle), valeur);
+      };
     }
   });
+</script>
 
-  // Envoi automatique des modifications de l'admin (annulation, blocage de créneau) vers le Cloud
-  if (typeof DB !== 'undefined' && DB.set) {
-    DB.set = function(cle, valeur) {
-      localStorage.setItem(cle, JSON.stringify(valeur));
-      set(ref(dbCloud, 'barber_pro_db/' + cle), valeur);
-    };
-  }
+<script>
+  // Initialisation sécurisée des composants d'interface natifs
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof initModal === 'function') initModal();
+  });
 </script>
 
 <style>
-  /* Animation visuelle pour l'alerte de la cloche */
   @keyframes secousse-cloche {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(15deg); }
@@ -64,3 +65,5 @@
   }
   .anim-cloche { display: inline-block; animation: secousse-cloche 0.5s ease 3; color: #d4af37; }
 </style>
+</body>
+</html>
