@@ -391,7 +391,7 @@ function passerEtape(n) {
   if (n === 4) fabriquerRecapulaire();
 }
 
-function construireCalendrier() {
+function construirCalendrier() {
   const zone = document.getElementById('grille-calendrier'); if (!zone) return;
   const pivot = new Date(anneeCourante, moisCourant, 1);
   document.getElementById('titre-mois-annee').innerText = pivot.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
@@ -410,7 +410,7 @@ function construireCalendrier() {
     zone.appendChild(box);
   }
 }
-function naviguerMois(dir) { moisCourant += dir; construireCalendrier(); }
+function naviguerMois(dir) { moisCourant += dir; construirCalendrier(); }
 
 function calculerHeuresDisponibles() {
   const zone = document.getElementById('grille-heures-dispos'); zone.innerHTML = '';
@@ -479,7 +479,17 @@ window.addEventListener('load', async () => {
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
     const { getDatabase, ref, set, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
 
-    const firebaseConfig = { databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/" };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsjrxUlmUrko9oKADYzgOoHC_qfClEP7Y",
+      authDomain: "barber-pro-dz.firebaseapp.com",
+      databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "barber-pro-dz",
+      storageBucket: "barber-pro-dz.firebasestorage.app",
+      messagingSenderId: "1011402409421",
+      appId: "1:1011402409421:web:218f72ccf7937cfeb0b084",
+      measurementId: "G-NPY5N37WZ5"
+    };
+
     const app = initializeApp(firebaseConfig);
     const dbCloud = getDatabase(app);
     const noeudSalon = ref(dbCloud, 'barber_pro_db');
@@ -503,7 +513,7 @@ window.addEventListener('load', async () => {
         set(ref(dbCloud, 'barber_pro_db/' + cle), val).finally(() => blocSync = false);
       };
     }
-  } catch(e) { console.error("Erreur Cloud:", e); }
+  } catch(e) { console.error("Erreur Cloud Client:", e); }
 });
 </script>
 </body>
