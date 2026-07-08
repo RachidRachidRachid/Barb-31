@@ -15,11 +15,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-/* =========================================================
-   BARBER PRO DZ — Design tokens & styles client
-   Palette : Noir / Blanc / Or — inspiré Booksy / Fresha / Planity
-   ========================================================= */
-
 :root {
   --noir: #0b0b0c;
   --noir-carte: #17171b;
@@ -42,9 +37,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--noir);
   color: var(--blanc);
@@ -61,16 +54,11 @@ body.light {
   --blanc: #17171b;
   --gris: #5b5b62;
 }
-
 h1, h2, h3, h4 { font-family: var(--police-titre); font-weight: 700; letter-spacing: .3px; }
-
 a { color: inherit; text-decoration: none; }
 button { font-family: var(--police-corps); cursor: pointer; border: none; }
-img { max-width: 100%; display: block; }
-
 .conteneur { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-/* ---------- Bandeau annonce ---------- */
 .bandeau-or {
   background: var(--or-degrade);
   color: #101010;
@@ -80,8 +68,6 @@ img { max-width: 100%; display: block; }
   letter-spacing: .5px;
   padding: 6px 10px;
 }
-
-/* ---------- Header / nav ---------- */
 header.entete {
   position: sticky; top: 0; z-index: 50;
   background: rgba(11,11,12,.85);
@@ -89,44 +75,23 @@ header.entete {
   border-bottom: 1px solid var(--noir-bord);
 }
 body.light header.entete { background: rgba(245,243,238,.85); }
-
-.barre-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; max-width: 1100px; margin: 0 auto;
-}
-.logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--police-titre); font-size: 1.4rem; font-weight: 700;
-}
+.barre-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; max-width: 1100px; margin: 0 auto; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--police-titre); font-size: 1.4rem; font-weight: 700; }
 .logo .rasoir { color: var(--or-clair); }
 .logo small { display: block; font-family: var(--police-corps); font-size: .55rem; letter-spacing: 3px; color: var(--gris); font-weight: 400; }
-
 .nav-liens { display: flex; gap: 26px; }
-.nav-liens a {
-  font-size: .92rem; color: var(--gris); position: relative; padding: 4px 0;
-  transition: color .25s;
-}
+.nav-liens a { font-size: .92rem; color: var(--gris); position: relative; padding: 4px 0; transition: color .25s; }
 .nav-liens a.actif, .nav-liens a:hover { color: var(--or-clair); }
-.nav-liens a.actif::after {
-  content:''; position: absolute; bottom:-4px; left:0; right:0; height:2px; background: var(--or-degrade); border-radius: 2px;
-}
-
+.nav-liens a.actif::after { content:''; position: absolute; bottom:-4px; left:0; right:0; height:2px; background: var(--or-degrade); border-radius: 2px; }
 .btn-menu-mobile { display:none; background:none; color: var(--blanc); font-size:1.4rem; }
 
 @media (max-width: 860px) {
-  .nav-liens { position: fixed; top: 64px; right: 0; left: 0; background: var(--noir-carte);
-    flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--noir-bord);
-    transform: translateY(-140%); transition: transform .3s ease; }
+  .nav-liens { position: fixed; top: 64px; right: 0; left: 0; background: var(--noir-carte); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--noir-bord); transform: translateY(-140%); transition: transform .3s ease; }
   .nav-liens.ouvert { transform: translateY(0); }
   .btn-menu-mobile { display: block; }
 }
 
-/* ---------- Boutons ---------- */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 26px; border-radius: 999px; font-weight: 600; font-size: .92rem;
-  transition: transform .2s ease, box-shadow .2s ease, opacity .2s;
-}
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: 999px; font-weight: 600; font-size: .92rem; transition: transform .2s ease, box-shadow .2s ease, opacity .2s; }
 .btn-or { background: var(--or-degrade); color: #101010; box-shadow: 0 6px 20px rgba(201,162,39,.25); }
 .btn-or:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(201,162,39,.4); }
 .btn-contour { border: 1px solid var(--noir-bord); color: var(--blanc); background: transparent; }
@@ -134,34 +99,16 @@ body.light header.entete { background: rgba(245,243,238,.85); }
 .btn-bloc { width: 100%; }
 .btn:disabled { opacity: .4; cursor: not-allowed; transform:none !important; }
 .btn-petit { padding: 8px 16px; font-size: .8rem; }
-.btn-danger { background: var(--rouge); color: #fff; }
 
-/* ---------- Hero ---------- */
-.hero {
-  position: relative; padding: 90px 20px 70px; text-align: center; overflow: hidden;
-}
-.hero::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse at top, rgba(201,162,39,.16), transparent 60%);
-  pointer-events:none;
-}
-.hero .oeillet {
-  display:inline-block; font-family: var(--police-mono); font-size:.72rem; letter-spacing:3px;
-  color: var(--or-clair); border: 1px solid var(--noir-bord); padding: 6px 16px; border-radius: 999px; margin-bottom: 22px;
-}
-.hero h1 {
-  font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin-bottom: 18px;
-}
+.hero { position: relative; padding: 90px 20px 70px; text-align: center; overflow: hidden; }
+.hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at top, rgba(201,162,39,.16), transparent 60%); pointer-events:none; }
+.hero .oeillet { display:inline-block; font-family: var(--police-mono); font-size:.72rem; letter-spacing:3px; color: var(--or-clair); border: 1px solid var(--noir-bord); padding: 6px 16px; border-radius: 999px; margin-bottom: 22px; }
+.hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin-bottom: 18px; }
 .hero h1 span { color: var(--or-clair); font-style: italic; }
 .hero p.sous-titre { color: var(--gris); max-width: 520px; margin: 0 auto 34px; font-size: 1.05rem; }
 .hero .actions-hero { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.rasoir-anime { position: absolute; opacity:.08; font-size: 22rem; top: -80px; right: -80px; transform: rotate(15deg); pointer-events:none; }
 
-.rasoir-anime {
-  position: absolute; opacity:.08; font-size: 22rem; top: -80px; right: -80px;
-  transform: rotate(15deg); pointer-events:none;
-}
-
-/* ---------- Bande de coiffeurs vedette ---------- */
 .section { padding: 70px 20px; }
 .section-tete { text-align:center; margin-bottom: 42px; }
 .section-tete .eyebrow { color: var(--or-clair); font-size:.78rem; letter-spacing:3px; font-family: var(--police-mono); }
@@ -169,152 +116,86 @@ body.light header.entete { background: rgba(245,243,238,.85); }
 .section-tete p { color: var(--gris); margin-top: 10px; }
 
 .grille-3 { display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
-.grille-4 { display:grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
-@media (max-width: 860px) { .grille-3, .grille-4 { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 560px) { .grille-3, .grille-4 { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .grille-3 { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 560px) { .grille-3 { grid-template-columns: 1fr; } }
 
-.carte {
-  background: var(--noir-carte); border: 1px solid var(--noir-bord); border-radius: var(--radius-lg);
-  padding: 24px; transition: transform .25s ease, border-color .25s;
-}
+.carte { background: var(--noir-carte); border: 1px solid var(--noir-bord); border-radius: var(--radius-lg); padding: 24px; transition: transform .25s ease, border-color .25s; }
 .carte:hover { transform: translateY(-4px); border-color: var(--or); }
-
 .carte-coiffeur { text-align:center; }
 .carte-coiffeur img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; border: 2px solid var(--or); }
-.carte-coiffeur h3 { font-size: 1.1rem; }
-.carte-coiffeur p { color: var(--gris); font-size: .85rem; margin-top: 4px; }
-
 .carte-service { display:flex; justify-content:space-between; align-items:center; }
 .carte-service .cat { color: var(--or-clair); font-size:.7rem; letter-spacing:2px; text-transform:uppercase; }
-.carte-service h3 { font-size: 1.05rem; margin-top:4px; }
 .carte-service .duree { color: var(--gris); font-size: .8rem; margin-top:2px; }
-.carte-service .prix { font-family: var(--police-mono); font-weight:700; color: var(--or-clair); font-size:1.2rem; white-space:nowrap; }
-
+.carte-service .prix { font-family: var(--police-mono); font-weight:700; color: var(--or-clair); font-size:1.2rem; }
 .carte.selectionnable { cursor: pointer; }
 .carte.selectionnee { border-color: var(--or-clair); box-shadow: 0 0 0 2px var(--or-clair) inset; }
 
-/* ---------- Étapes réservation ---------- */
 .fil-etapes { display:flex; justify-content:center; gap:10px; margin-bottom: 46px; flex-wrap:wrap; }
-.etape-puce {
-  display:flex; align-items:center; gap:8px; padding: 8px 16px; border-radius: 999px;
-  background: var(--noir-carte); border:1px solid var(--noir-bord); font-size:.82rem; color: var(--gris);
-}
+.etape-puce { display:flex; align-items:center; gap:8px; padding: 8px 16px; border-radius: 999px; background: var(--noir-carte); border:1px solid var(--noir-bord); font-size:.82rem; color: var(--gris); }
 .etape-puce .num { width:20px; height:20px; border-radius:50%; background: var(--noir-carte-2); display:flex; align-items:center; justify-content:center; font-size:.72rem; }
 .etape-puce.active { border-color: var(--or); color: var(--blanc); }
 .etape-puce.active .num { background: var(--or-degrade); color:#101010; font-weight:700; }
 .etape-puce.fait .num { background: var(--vert); color:#fff; }
 
 .zone-etape { max-width: 720px; margin: 0 auto; }
-
 .grille-jours { display:grid; grid-template-columns: repeat(7,1fr); gap:8px; }
-.jour-case {
-  aspect-ratio: 1; display:flex; align-items:center; justify-content:center; border-radius: 10px;
-  background: var(--noir-carte); border:1px solid var(--noir-bord); font-size:.9rem; cursor:pointer;
-}
+.jour-case { aspect-ratio: 1; display:flex; align-items:center; justify-content:center; border-radius: 10px; background: var(--noir-carte); border:1px solid var(--noir-bord); font-size:.9rem; cursor:pointer; }
 .jour-case.desactive { opacity:.25; pointer-events:none; }
 .jour-case.selectionne { background: var(--or-degrade); color:#101010; font-weight:700; }
-.jour-case:hover:not(.desactive) { border-color: var(--or); }
 .entete-mois { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
 .entete-mois button { background:var(--noir-carte); color:var(--blanc); border:1px solid var(--noir-bord); width:36px; height:36px; border-radius:50%; }
 
 .grille-heures { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; }
 @media (max-width:560px){ .grille-heures{ grid-template-columns: repeat(3,1fr);} }
-.heure-case {
-  padding: 12px 6px; text-align:center; border-radius: 10px; background: var(--noir-carte);
-  border:1px solid var(--noir-bord); cursor:pointer; font-family: var(--police-mono); font-size:.9rem;
-}
+.heure-case { padding: 12px 6px; text-align:center; border-radius: 10px; background: var(--noir-carte); border:1px solid var(--noir-bord); cursor:pointer; font-family: var(--police-mono); font-size:.9rem; }
 .heure-case.selectionne { background: var(--or-degrade); color:#101010; font-weight:700; }
-.heure-case:hover { border-color: var(--or); }
-.aucun-creneau { text-align:center; color:var(--gris); padding: 30px 0; }
 
 .champ { margin-bottom: 18px; }
 .champ label { display:block; font-size:.82rem; color:var(--gris); margin-bottom:7px; }
-.champ input, .champ textarea, .champ select {
-  width:100%; background: var(--noir-carte); border:1px solid var(--noir-bord); color: var(--blanc);
-  padding: 13px 16px; border-radius: 10px; font-family: var(--police-corps); font-size: .95rem;
-}
-.champ input:focus, .champ textarea:focus, .champ select:focus { outline:none; border-color: var(--or); }
+.champ input, .champ textarea { width:100%; background: var(--noir-carte); border:1px solid var(--noir-bord); color: var(--blanc); padding: 13px 16px; border-radius: 10px; font-family: var(--police-corps); font-size: .95rem; }
+.champ input:focus, .champ textarea:focus { outline:none; border-color: var(--or); }
 
 .recap-reservation { background: var(--noir-carte); border:1px solid var(--noir-bord); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; }
 .recap-ligne { display:flex; justify-content:space-between; padding: 9px 0; border-bottom: 1px dashed var(--noir-bord); font-size:.92rem; }
 .recap-ligne:last-child { border-bottom:none; }
 .recap-ligne .valeur { color: var(--or-clair); font-weight:600; }
 .recap-total { display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--noir-bord); font-size:1.1rem; font-weight:700;}
-
 .actions-etape { display:flex; justify-content:space-between; margin-top: 30px; gap: 14px; }
 
-/* ---------- Ticket de confirmation (élément signature) ---------- */
-.billet {
-  max-width: 380px; margin: 0 auto; background: var(--noir-carte);
-  border-radius: var(--radius-lg); position: relative; overflow: hidden;
-  border: 1px solid var(--or); box-shadow: var(--ombre);
-}
+.billet { max-width: 380px; margin: 0 auto; background: var(--noir-carte); border-radius: var(--radius-lg); position: relative; overflow: hidden; border: 1px solid var(--or); box-shadow: var(--ombre); }
 .billet-tete { background: var(--or-degrade); color:#101010; text-align:center; padding: 22px 20px 26px; }
-.billet-tete .rasoir { font-size:1.6rem; }
 .billet-tete h3 { font-family: var(--police-titre); font-size:1.3rem; margin-top:6px; }
-.billet-perforation {
-  height: 0; border-top: 2px dashed var(--noir-bord); position:relative; margin: 0 24px;
-}
-.billet-perforation::before, .billet-perforation::after {
-  content:''; position:absolute; top:-11px; width:22px; height:22px; background: var(--noir); border-radius:50%;
-}
+.billet-perforation { height: 0; border-top: 2px dashed var(--noir-bord); position:relative; margin: 0 24px; }
+.billet-perforation::before, .billet-perforation::after { content:''; position:absolute; top:-11px; width:22px; height:22px; background: var(--noir); border-radius:50%; }
 .billet-perforation::before { left:-34px; }
 .billet-perforation::after { right:-34px; }
 .billet-corps { padding: 26px 26px 8px; }
 .billet-code { text-align:center; font-family: var(--police-mono); font-size:1.5rem; letter-spacing:4px; color: var(--or-clair); margin-bottom: 18px; }
-.billet-qr { display:flex; justify-content:center; margin: 10px 0 20px; }
 .billet-pied { padding: 18px 26px 26px; text-align:center; color: var(--gris); font-size:.78rem; }
 
-/* ---------- Galerie ---------- */
 .galerie-grille { columns: 3 220px; column-gap: 14px; }
 .galerie-grille img { border-radius: var(--radius); margin-bottom: 14px; border: 1px solid var(--noir-bord); transition: transform .3s; }
-.galerie-grille img:hover { transform: scale(1.02); }
 
-/* ---------- Contact ---------- */
-.reseaux { display:flex; gap: 16px; justify-content:center; margin-top: 26px; flex-wrap:wrap; }
-.reseau-badge {
-  display:flex; align-items:center; gap:10px; background: var(--noir-carte); border:1px solid var(--noir-bord);
-  padding: 12px 20px; border-radius: 999px; font-size:.9rem;
-}
-.reseau-badge i { color: var(--or-clair); font-size:1.1rem; }
-.reseau-badge:hover { border-color: var(--or); }
-
-/* ---------- Historique ---------- */
 .liste-historique { display:flex; flex-direction:column; gap: 14px; }
-.item-historique {
-  display:flex; justify-content:space-between; align-items:center;
-  background: var(--noir-carte); border:1px solid var(--noir-bord); border-radius: var(--radius); padding: 16px 20px;
-}
+.item-historique { display:flex; justify-content:space-between; align-items:center; background: var(--noir-carte); border:1px solid var(--noir-bord); border-radius: var(--radius); padding: 16px 20px; }
 .badge-statut { font-size:.72rem; padding: 5px 12px; border-radius: 999px; font-weight:600; }
 .badge-statut.confirmée { background: rgba(73,177,125,.15); color: var(--vert); }
 .badge-statut.annulée { background: rgba(226,87,76,.15); color: var(--rouge); }
-.badge-statut.terminée { background: rgba(154,154,161,.15); color: var(--gris); }
 
-/* ---------- Footer ---------- */
-footer.pied { border-top: 1px solid var(--noir-bord); padding: 40px 20px 26px; text-align:center; color: var(--gris); font-size:.85rem; }
-footer.pied .or { color: var(--or-clair); }
-
-/* ---------- Modal de base ---------- */
-.fond-modal { position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(5px); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; transition:opacity .3s; }
-.fond-modal.masque { opacity:0; pointer-events:none; }
-.fenetre-modal { background:var(--noir-carte-2); border:1px solid var(--noir-bord); border-radius:var(--radius-lg); padding:30px; max-width:500px; width:100%; position:relative; box-shadow:var(--ombre); max-height:90vh; overflow-y:auto; }
-.fermer-modal { position:absolute; top:20px; right:20px; background:none; color:var(--gris); font-size:1.2rem; }
-
-/* ---------- Toasts ---------- */
+footer.pied { border-top: 1px solid var(--noir-bord); padding: 40px 20px 26px; text-align:center; color: var(--gris); font-size:.85rem; margin-top: 50px; }
 .toast { display:inline-flex; align-items:center; gap:12px; background:var(--noir-carte-2); border:1px solid var(--or); padding:14px 22px; border-radius:999px; box-shadow:var(--ombre); font-size:.9rem; animation: glisse-toast .3s ease; }
 @keyframes glisse-toast { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
-
 .masque { display: none !important; }
 </style>
 </head>
 <body>
 
-<div class="bandeau-or"><i class="fa-solid fa-scissors"></i> L'EXCELLENCE DU STYLE À L'ALGÉRIENNE — OUVERT DE 09:00 À 22:00</div>
+<div class="bandeau-or"><i class="fa-solid fa-scissors"></i> L'EXCELLENCE DU STYLE À L'ALGÉRIENNE — 09:00 À 22:00</div>
 
 <header class="entete">
   <div class="barre-nav">
     <a href="#" class="logo">
-      <i class="fa-solid fa-solid fa-razor rasoir"></i>
+      <i class="fa-solid fa-scissors rasoir"></i>
       <div>BARBER PRO<small>DZ</small></div>
     </a>
     <nav class="nav-liens" id="liens-menu">
@@ -325,7 +206,7 @@ footer.pied .or { color: var(--or-clair); }
     </nav>
     <div style="display:flex; gap:10px; align-items:center;">
       <button class="btn-contour btn-petit" onclick="basculerTheme()" style="border-radius:50%; width:36px; height:36px; padding:0;"><i class="fa-solid fa-moon"></i></button>
-      <button class="btn-or btn-petit masque" id="btn-installer">Installer l'app</button>
+      <button class="btn-or btn-petit masque" id="btn-installer">Installer</button>
       <button class="btn-menu-mobile" onclick="basculerMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -334,45 +215,32 @@ footer.pied .or { color: var(--or-clair); }
 <div class="onglet-vue conteneur" id="vue-accueil">
   <section class="hero">
     <i class="fa-solid fa-scissors rasoir-anime"></i>
-    <div class="oeillet">PRENDRE RENDEZ-VOUS EN 3 CLICKS</div>
+    <div class="oeillet">RÉSERVATION EN LIGNE</div>
     <h1>Le style n'est pas un hasard,<br>C'est une <span>Excellence</span></h1>
-    <p class="sous-titre">Réservez votre coiffeur préféré, choisissez votre prestation et votre heure en quelques secondes. Sans attente.</p>
+    <p class="sous-titre">Réservez votre coiffeur, votre prestation et votre créneau en quelques secondes.</p>
     <div class="actions-hero">
-      <button class="btn btn-or" onclick="changerOnglet('reserver')"><i class="fa-solid fa-calendar-check"></i> Réserver ma coupe</button>
-      <a href="#decouvrir-services" class="btn btn-contour">Voir les tarifs</a>
+      <button class="btn btn-or" onclick="changerOnglet('reserver')"><i class="fa-solid fa-calendar-check"></i> Prendre Rendez-vous</button>
     </div>
   </section>
 
-  <section class="section" id="decouvrir-services">
+  <section class="section">
     <div class="section-tete">
-      <div class="eyebrow">PRESTATIONS</div>
-      <h2>Aperçu de nos Tarifs</h2>
-      <p>Des soins d'exception adaptés à toutes vos exigences.</p>
+      <h2>Nos Prestations & Tarifs</h2>
     </div>
-    <div class="grille-3" id="apercu-services">
-      </div>
-    <div style="text-align:center; margin-top:30px;">
-      <button class="btn btn-contour" onclick="changerOnglet('reserver')">Tout voir & Réserver</button>
-    </div>
+    <div class="grille-3" id="apercu-services"></div>
   </section>
 </div>
 
 <div class="onglet-vue conteneur masque" id="vue-reserver">
   <section class="section">
-    <div class="section-tete">
-      <div class="eyebrow">RÉSERVATION</div>
-      <h2>Planifiez votre venue</h2>
-    </div>
-
     <div class="fil-etapes">
       <div class="etape-puce active" id="puce-1"><div class="num">1</div>Prestation</div>
       <div class="etape-puce" id="puce-2"><div class="num">2</div>Coiffeur</div>
       <div class="etape-puce" id="puce-3"><div class="num">3</div>Date & Heure</div>
-      <div class="etape-puce" id="puce-4"><div class="num">4</div>Vos Infos</div>
+      <div class="etape-puce" id="puce-4"><div class="num">4</div>Confirmation</div>
     </div>
 
     <div class="zone-etape" id="bloc-etape-1">
-      <h3 style="margin-bottom:20px;">Choisissez un ou plusieurs services :</h3>
       <div class="grille-3" id="liste-services-resa"></div>
       <div class="actions-etape" style="justify-content:flex-end;">
         <button class="btn btn-or" id="btn-suivant-1" onclick="passerEtape(2)" disabled>Continuer <i class="fa-solid fa-arrow-right"></i></button>
@@ -380,66 +248,42 @@ footer.pied .or { color: var(--or-clair); }
     </div>
 
     <div class="zone-etape masque" id="bloc-etape-2">
-      <h3 style="margin-bottom:20px;">Choisissez votre coiffeur :</h3>
       <div class="grille-3" id="liste-coiffeurs-resa"></div>
       <div class="actions-etape">
-        <button class="btn btn-contour" onclick="passerEtape(1)"><i class="fa-solid fa-arrow-left"></i> Retour</button>
-        <button class="btn btn-or" id="btn-suivant-2" onclick="passerEtape(3)" disabled>Continuer <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn btn-contour" onclick="passerEtape(1)">Retour</button>
+        <button class="btn btn-or" id="btn-suivant-2" onclick="passerEtape(3)" disabled>Continuer</button>
       </div>
     </div>
 
     <div class="zone-etape masque" id="bloc-etape-3">
-      <h3 style="margin-bottom:20px;">Sélectionnez le créneau :</h3>
       <div class="carte" style="margin-bottom:20px;">
         <div class="entete-mois">
           <button onclick="naviguerMois(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-          <h4 id="titre-mois-annee" style="text-transform:capitalize;">Mois</h4>
+          <h4 id="titre-mois-annee">Mois</h4>
           <button onclick="naviguerMois(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
         <div class="grille-jours" id="grille-calendrier"></div>
       </div>
-      
-      <h4 style="margin-bottom:14px;"><i class="fa-regular fa-clock"></i> Horaires disponibles pour ce jour :</h4>
       <div class="grille-heures" id="grille-heures-dispos"></div>
-      
       <div class="actions-etape">
-        <button class="btn btn-contour" onclick="passerEtape(2)"><i class="fa-solid fa-arrow-left"></i> Retour</button>
-        <button class="btn btn-or" id="btn-suivant-3" onclick="passerEtape(4)" disabled>Continuer <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn btn-contour" onclick="passerEtape(2)">Retour</button>
+        <button class="btn btn-or" id="btn-suivant-3" onclick="passerEtape(4)" disabled>Continuer</button>
       </div>
     </div>
 
     <div class="zone-etape masque" id="bloc-etape-4">
-      <h3 style="margin-bottom:20px;">Confirmez vos coordonnées :</h3>
       <div class="recap-reservation" id="recap-final-texte"></div>
-      
       <div class="carte">
-        <div class="champ">
-          <label>Nom complet *</label>
-          <input type="text" id="client-nom" placeholder="Ex: Mohamed Benali" required>
-        </div>
-        <div class="champ">
-          <label>Numéro de téléphone *</label>
-          <input type="tel" id="client-tel" placeholder="Ex: 0550 12 34 56" required>
-        </div>
-        <div class="champ">
-          <label>Notes ou demandes particulières (optionnel)</label>
-          <textarea id="client-notes" rows="2" placeholder="Ex: Dégradé à blanc progressif..."></textarea>
-        </div>
-        <button class="btn btn-or btn-bloc" style="margin-top:10px;" onclick="validerReservationFinale()"><i class="fa-solid fa-check"></i> Confirmer le rendez-vous</button>
-      </div>
-
-      <div class="actions-etape">
-        <button class="btn btn-contour" onclick="passerEtape(3)"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+        <div class="champ"><label>Nom complet *</label><input type="text" id="client-nom" required></div>
+        <div class="champ"><label>Téléphone *</label><input type="tel" id="client-tel" required></div>
+        <div class="champ"><label>Notes (optionnel)</label><textarea id="client-notes" rows="2"></textarea></div>
+        <button class="btn btn-or btn-bloc" onclick="validerReservationFinale()">Confirmer le Rendez-vous</button>
       </div>
     </div>
 
     <div class="zone-etape masque" id="bloc-etape-5">
       <div class="billet">
-        <div class="billet-tete">
-          <i class="fa-solid fa-circle-check rasoir"></i>
-          <h3>Réservation Confirmée !</h3>
-          <p style="font-size:.85rem; opacity:.8; margin-top:2px;">Présentez ce ticket à votre arrivée</p>
-        </div>
+        <div class="billet-tete"><h3>Réservation Confirmée !</h3></div>
         <div class="billet-perforation"></div>
         <div class="billet-corps">
           <div class="billet-code" id="ticket-code">#XXXX</div>
@@ -448,524 +292,219 @@ footer.pied .or { color: var(--or-clair); }
           <div class="recap-ligne"><span>Heure :</span><span class="valeur" id="ticket-heure"></span></div>
           <div class="recap-ligne"><span>Total :</span><span class="valeur" id="ticket-total"></span></div>
         </div>
-        <div class="billet-pied">
-          <p>Merci pour votre confiance. En cas de retard ou d'annulation, merci de prévenir au moins 1 heure à l'avance.</p>
-        </div>
-      </div>
-      <div style="text-align:center; margin-top:30px;">
-        <button class="btn btn-contour" onclick="changerOnglet('accueil')">Retour à l'accueil</button>
       </div>
     </div>
-
   </section>
 </div>
 
 <div class="onglet-vue conteneur masque" id="vue-galerie">
-  <section class="section">
-    <div class="section-tete">
-      <div class="eyebrow">GALERIE</div>
-      <h2>Nos Réalisations</h2>
-    </div>
-    <div class="galerie-grille" id="zone-galerie"></div>
-  </section>
+  <section class="section"><div class="galerie-grille" id="zone-galerie"></div></section>
 </div>
 
 <div class="onglet-vue conteneur masque" id="vue-historique">
-  <section class="section">
-    <div class="section-tete">
-      <div class="eyebrow">VOS TICKETS</div>
-      <h2>Historique des réservations</h2>
-      <p>Retrouvez vos réservations effectuées sur cet appareil.</p>
-    </div>
-    <div class="liste-historique" id="zone-historique" style="max-width:600px; margin:0 auto;"></div>
-  </section>
+  <section class="section"><div class="liste-historique" id="zone-historique"></div></section>
 </div>
 
-<div class="fond-modal masque" id="fond-modal" onclick="fermerModal()">
-  <div class="fenetre-modal" id="contenu-modal" onclick="event.stopPropagation()"></div>
-</div>
-
-<footer class="pied">
-  <div class="conteneur">
-    <p>© 2026 <span class="or">BARBER PRO DZ</span>. Tous droits réservés.</p>
-    <p style="font-size:.75rem; color:var(--gris-fonce); margin-top:6px;">L'excellence du style, propulsée en temps réel.</p>
-  </div>
-</footer>
+<footer class="pied"><p>© 2026 BARBER PRO DZ. Tous droits réservés.</p></footer>
 
 <script>
-/* ---------- MOTEUR STOCKAGE LOCAL DB ---------- */
 const DB = {
-  KEYS: { SERVICES: 'services', COIFFEURS: 'coiffeurs', HORAIRES: 'horaires', RESERVATIONS: 'reservations', GALERIE: 'galerie', GENERAL: 'general' },
-  get(cle) {
-    const v = localStorage.getItem(cle);
-    try { return v ? JSON.parse(v) : null; } catch { return v; }
-  },
-  set(cle, val) {
-    localStorage.setItem(cle, typeof val === 'object' ? JSON.stringify(val) : val);
-  },
+  KEYS: { SERVICES: 'services', COIFFEURS: 'coiffeurs', HORAIRES: 'horaires', RESERVATIONS: 'reservations', GALERIE: 'galerie' },
+  get(cle) { const v = localStorage.getItem(cle); try { return v ? JSON.parse(v) : null; } catch { return v; } },
+  set(cle, val) { localStorage.setItem(cle, typeof val === 'object' ? JSON.stringify(val) : val); },
   seed() {
     if (!localStorage.getItem(this.KEYS.SERVICES)) {
       this.set(this.KEYS.SERVICES, [
-        { id: 1, nom: "Coupe Classique + Barbe", categorie: "Cheveux & Barbe", tarif: 1200, duree: 45 },
-        { id: 2, nom: "Coupe Taper / Dégradé", categorie: "Coiffure", tarif: 800, duree: 30 },
-        { id: 3, nom: "Taille de Barbe Premium (Vapeur)", categorie: "Barbe", tarif: 600, duree: 25 },
-        { id: 4, nom: "Soin Visage Black Mask", categorie: "Soins", tarif: 1000, duree: 20 },
-        { id: 5, nom: "Coupe Enfant (-12 ans)", categorie: "Coiffure", tarif: 500, duree: 20 },
-        { id: 6, nom: "Coloration / Décoloration", categorie: "Technique", tarif: 2000, duree: 60 }
+        { id: 1, nom: "Coupe Classique + Barbe", categorie: "Cheveux", tarif: 1200, duree: 45 },
+        { id: 2, nom: "Dégradé Américain / Taper", categorie: "Cheveux", tarif: 800, duree: 30 },
+        { id: 3, nom: "Soin Visage Black Mask", categorie: "Soins", tarif: 1000, duree: 20 }
       ]);
     }
     if (!localStorage.getItem(this.KEYS.COIFFEURS)) {
       this.set(this.KEYS.COIFFEURS, [
-        { id: 1, nom: "Yacine Barber", specialite: "Expert Dégradés & Visagiste", actif: true, photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200" },
-        { id: 2, nom: "Karim Classic", specialite: "Spécialiste Barbe & Ciseaux", actif: true, photo: "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?auto=format&fit=crop&q=80&w=200" },
-        { id: 3, nom: "Sofiane Freestyle", specialite: "Coloration & Dessins", actif: true, photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200" }
+        { id: 1, nom: "Yacine", specialite: "Expert Dégradés", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200" },
+        { id: 2, nom: "Karim", specialite: "Spécialiste Barbe", photo: "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?auto=format&fit=crop&q=80&w=200" }
       ]);
     }
-    if (!localStorage.getItem(this.KEYS.HORAIRES)) {
-      this.set(this.KEYS.HORAIRES, { debut: "09:00", fin: "22:00", pauseDebut: "13:00", pauseFin: "14:00", intervalle: 30 });
-    }
-    if (!localStorage.getItem(this.KEYS.GALERIE)) {
-      this.set(this.KEYS.GALERIE, [
-        "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80",
-        "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80",
-        "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80",
-        "https://images.unsplash.com/photo-1517832606589-7a598b647192?auto=format&fit=crop&w=500&q=80"
-      ]);
-    }
+    if (!localStorage.getItem(this.KEYS.HORAIRES)) this.set(this.KEYS.HORAIRES, { debut: "09:00", fin: "22:00", pauseDebut: "13:00", pauseFin: "14:00", intervalle: 30 });
+    if (!localStorage.getItem(this.KEYS.GALERIE)) this.set(this.KEYS.GALERIE, ["https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80"]);
     if (!localStorage.getItem(this.KEYS.RESERVATIONS)) this.set(this.KEYS.RESERVATIONS, []);
   }
 };
 DB.seed();
 
-/* ---------- INTERFACE APPLICATIVE NATIVES ---------- */
-let serviceSelectionnes = [];
-let coiffeurSelectionne = null;
-let dateSelectionnee = null;
-let heureSelectionnee = null;
+let serviceSelectionnes = [], coiffeurSelectionne = null, dateSelectionnee = null, heureSelectionnee = null;
+let moisCourant = new Date().getMonth(), anneeCourante = new Date().getFullYear();
 
-let moisCourant = new Date().getMonth();
-let anneeCourante = new Date().getFullYear();
-
-function changerOnglet(idVue) {
+function changerOnglet(id) {
   document.querySelectorAll('.onglet-vue').forEach(el => el.classList.add('masque'));
   document.querySelectorAll('.nav-liens a').forEach(el => el.classList.remove('actif'));
-  
-  const cible = document.getElementById('vue-' + idVue);
-  if (cible) cible.classList.remove('masque');
-  
-  const lien = document.querySelector(`.nav-liens a[href="#${idVue}"]`);
-  if (lien) lien.classList.add('actif');
-  
+  document.getElementById('vue-' + id)?.classList.remove('masque');
   document.getElementById('liens-menu').classList.remove('ouvert');
-  window.scrollTo({ top: 0 });
-
-  if (idVue === 'accueil') chargerApercuServices();
-  if (idVue === 'reserver') initialiserEtapeReservation();
-  if (idVue === 'galerie') chargerGalerie();
-  if (idVue === 'historique') chargerHistorique();
+  if (id === 'accueil') chargerApercuServices();
+  if (id === 'reserver') initialiserEtapeReservation();
+  if (id === 'galerie') chargerGalerie();
+  if (id === 'historique') chargerHistorique();
 }
-
 function basculerMenu() { document.getElementById('liens-menu').classList.toggle('ouvert'); }
-function basculerTheme() {
-  document.body.classList.toggle('light');
-  const icone = document.querySelector('.btn-contour i');
-  if (icone) {
-    if (document.body.classList.contains('light')) icone.className = "fa-solid fa-sun";
-    else icone.className = "fa-solid fa-moon";
-  }
-}
+function basculerTheme() { document.body.classList.toggle('light'); }
 
-/* RENDU DYNAMIQUE ACCUEIL */
 function chargerApercuServices() {
-  const zone = document.getElementById('apercu-services');
-  if (!zone) return;
-  const services = (DB.get(DB.KEYS.SERVICES) || []).slice(0, 6);
-  zone.innerHTML = services.map(s => `
+  const zone = document.getElementById('apercu-services'); if (!zone) return;
+  zone.innerHTML = (DB.get(DB.KEYS.SERVICES) || []).map(s => `
     <div class="carte carte-service">
-      <div>
-        <div class="cat">${s.categorie}</div>
-        <h3>${s.nom}</h3>
-        <div class="duree"><i class="fa-regular fa-clock"></i> ${s.duree} min</div>
-      </div>
+      <div><div class="cat">${s.categorie}</div><h3>${s.nom}</h3><small>${s.duree} min</small></div>
       <div class="prix">${s.tarif} DA</div>
     </div>
   `).join('');
 }
 
-/* ENGiNE DE RÉSERVATION PAS À PAS */
 function initialiserEtapeReservation() {
-  serviceSelectionnes = []; coiffeurSelectionne = null; dateSelectionnee = null; heureSelectionnee = null;
-  passerEtape(1);
-  
-  const srvs = DB.get(DB.KEYS.SERVICES) || [];
-  const zoneSrv = document.getElementById('liste-services-resa');
-  zoneSrv.innerHTML = srvs.map(s => `
+  serviceSelectionnes = []; coiffeurSelectionne = null; dateSelectionnee = null; heureSelectionnee = null; passerEtape(1);
+  document.getElementById('liste-services-resa').innerHTML = (DB.get(DB.KEYS.SERVICES) || []).map(s => `
     <div class="carte selectionnable" id="srv-card-${s.id}" onclick="selectionnerService(${s.id})">
-      <div class="cat">${s.categorie}</div>
-      <h3 style="margin:4px 0 8px 0;">${s.nom}</h3>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="color:var(--gris); font-size:.85rem;"><i class="fa-regular fa-clock"></i> ${s.duree} min</span>
-        <strong style="color:var(--or-clair); font-family:var(--police-mono);">${s.tarif} DA</strong>
-      </div>
+      <h3>${s.nom}</h3><p>${s.tarif} DA - ${s.duree} min</p>
     </div>
   `).join('');
-
-  const coifs = DB.get(DB.KEYS.COIFFEURS) || [];
-  const zoneCof = document.getElementById('liste-coiffeurs-resa');
-  zoneCof.innerHTML = coifs.map(c => `
+  document.getElementById('liste-coiffeurs-resa').innerHTML = (DB.get(DB.KEYS.COIFFEURS) || []).map(c => `
     <div class="carte carte-coiffeur selectionnable" id="coif-card-${c.id}" onclick="selectionnerCoiffeur(${c.id})">
-      <img src="${c.photo}" alt="${c.nom}">
-      <h3>${c.nom}</h3>
-      <p>${c.specialite}</p>
+      <img src="${c.photo}"><h3>${c.nom}</h3><p>${c.specialite}</p>
     </div>
   `).join('');
-  
   construireCalendrier();
 }
 
 function selectionnerService(id) {
-  const index = serviceSelectionnes.indexOf(id);
-  if (index > -1) serviceSelectionnes.splice(index, 1);
-  else serviceSelectionnes.push(id);
-  
+  const idx = serviceSelectionnes.indexOf(id); if (idx > -1) serviceSelectionnes.splice(idx, 1); else serviceSelectionnes.push(id);
   document.querySelectorAll('#liste-services-resa .carte').forEach(c => c.classList.remove('selectionnee'));
   serviceSelectionnes.forEach(sid => document.getElementById('srv-card-' + sid)?.classList.add('selectionnee'));
-  
   document.getElementById('btn-suivant-1').disabled = (serviceSelectionnes.length === 0);
 }
-
 function selectionnerCoiffeur(id) {
-  coiffeurSelectionne = id;
-  document.querySelectorAll('#liste-coiffeurs-resa .carte').forEach(c => c.classList.remove('selectionnee'));
-  document.getElementById('coif-card-' + id)?.classList.add('selectionnee');
-  document.getElementById('btn-suivant-2').disabled = false;
+  coiffeurSelectionne = id; document.querySelectorAll('#liste-coiffeurs-resa .carte').forEach(c => c.classList.remove('selectionnee'));
+  document.getElementById('coif-card-' + id)?.classList.add('selectionnee'); document.getElementById('btn-suivant-2').disabled = false;
 }
-
-function passerEtape(num) {
+function passerEtape(n) {
   document.querySelectorAll('.zone-etape').forEach(z => z.classList.add('masque'));
-  document.querySelectorAll('.etape-puce').forEach(p => p.className = 'etape-puce');
-  
-  document.getElementById('bloc-etape-' + num).classList.remove('masque');
-  for (let i = 1; i <= 4; i++) {
-    const p = document.getElementById('puce-' + i);
-    if (i < num) p.classList.add('fait');
-    if (i === num) p.classList.add('active');
-  }
-
-  if (num === 4) fabriquerRecapulaire();
+  document.getElementById('bloc-etape-' + n).classList.remove('masque');
+  document.querySelectorAll('.etape-puce').forEach((p, i) => { p.className = 'etape-puce' + (i+1===n ? ' active' : (i+1<n ? ' fait' : '')); });
+  if (n === 4) fabriquerRecapulaire();
 }
 
-/* CALENDRIER ET HEURES */
 function construireCalendrier() {
-  const zoneCalendrier = document.getElementById('grille-calendrier');
-  const zoneTitre = document.getElementById('titre-mois-annee');
-  if (!zoneCalendrier) return;
-
-  const datePivot = new Date(anneeCourante, moisCourant, 1);
-  zoneTitre.innerText = datePivot.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-  
-  zoneCalendrier.innerHTML = '';
-  const joursSemaine = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  joursSemaine.forEach(j => {
-    const d = document.createElement('div');
-    d.style.cssText = "text-align:center; font-size:.75rem; color:var(--gris); font-weight:600; padding-bottom:6px;";
-    d.innerText = j;
-    zoneCalendrier.appendChild(d);
-  });
-
-  const premierJourIndex = datePivot.getDay();
-  const totalJoursMois = new Date(anneeCourante, moisCourant + 1, 0).getDate();
-  
-  for (let i = 0; i < premierJourIndex; i++) {
-    zoneCalendrier.appendChild(document.createElement('div'));
-  }
-
-  const aujourdhui = new Date();
-  aujourdhui.setHours(0,0,0,0);
-
-  for (let j = 1; j <= totalJoursMois; j++) {
-    const caseJour = document.createElement('div');
-    caseJour.className = 'jour-case';
-    caseJour.innerText = j;
-    
-    const dateCase = new Date(anneeCourante, moisCourant, j);
-    if (dateCase < aujourdhui || dateCase.getDay() === 5) { // Désactivé si passé ou Vendredi (fermé)
-      caseJour.classList.add('desactive');
-    } else {
-      caseJour.onclick = () => choisirDate(dateCase, caseJour);
-      if (dateSelectionnee && dateSelectionnee.getTime() === dateCase.getTime()) {
-        caseJour.classList.add('selectionne');
-      }
+  const zone = document.getElementById('grille-calendrier'); if (!zone) return;
+  const pivot = new Date(anneeCourante, moisCourant, 1);
+  document.getElementById('titre-mois-annee').innerText = pivot.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  zone.innerHTML = '';
+  const total = new Date(anneeCourante, moisCourant + 1, 0).getDate();
+  for (let j = 1; j <= total; j++) {
+    const d = new Date(anneeCourante, moisCourant, j);
+    const box = document.createElement('div'); box.className = 'jour-case'; box.innerText = j;
+    if (d < new Date().setHours(0,0,0,0) || d.getDay() === 5) box.classList.add('desactive');
+    else {
+      box.onclick = () => {
+        dateSelectionnee = d; document.querySelectorAll('.jour-case').forEach(c => c.classList.remove('selectionne'));
+        box.classList.add('selectionne'); calculerHeuresDisponibles();
+      };
     }
-    zoneCalendrier.appendChild(caseJour);
+    zone.appendChild(box);
   }
 }
-
-function naviguerMois(direction) {
-  moisCourant += direction;
-  if (moisCourant > 11) { moisCourant = 0; anneeCourante++; }
-  if (moisCourant < 0) { moisCourant = 11; anneeCourante--; }
-  construireCalendrier();
-}
-
-function choisirDate(dateObj, element) {
-  dateSelectionnee = dateObj;
-  document.querySelectorAll('#grille-calendrier .jour-case').forEach(c => c.classList.remove('selectionne'));
-  element.classList.add('selectionne');
-  
-  calculerHeuresDisponibles();
-}
+function naviguerMois(dir) { moisCourant += dir; construireCalendrier(); }
 
 function calculerHeuresDisponibles() {
-  const zone = document.getElementById('grille-heures-dispos');
-  zone.innerHTML = '';
-  heureSelectionnee = null;
-  document.getElementById('btn-suivant-3').disabled = true;
-
-  const config = DB.get(DB.KEYS.HORAIRES);
-  const reservations = DB.get(DB.KEYS.RESERVATIONS) || [];
-
-  let hLoop = parseInt(config.debut.split(':')[0]);
-  let mLoop = parseInt(config.debut.split(':')[1]);
-  const hFin = parseInt(config.fin.split(':')[0]);
-  const mFin = parseInt(config.fin.split(':')[1]);
-
-  const dateStr = dateSelectionnee.toISOString().split('T')[0];
-
-  while (hLoop < hFin || (hLoop === hFin && mLoop < mFin)) {
-    const heureFormattee = `${String(hLoop).padStart(2,'0')}:${String(mLoop).padStart(2,'0')}`;
-    
-    // Filtre de la pause déjeuner
-    let dansPause = false;
-    if (config.pauseDebut && config.pauseFin) {
-      const minLoop = hLoop * 60 + mLoop;
-      const minP_Deb = parseInt(config.pauseDebut.split(':')[0])*60 + parseInt(config.pauseDebut.split(':')[1]);
-      const minP_Fin = parseInt(config.pauseFin.split(':')[0])*60 + parseInt(config.pauseFin.split(':')[1]);
-      if (minLoop >= minP_Deb && minLoop < minP_Fin) dansPause = true;
+  const zone = document.getElementById('grille-heures-dispos'); zone.innerHTML = '';
+  const cfg = DB.get(DB.KEYS.HORAIRES); const resas = DB.get(DB.KEYS.RESERVATIONS) || [];
+  let h = 9, m = 0;
+  while (h < 22) {
+    const hr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const occupe = resas.some(r => r.date === dateSelectionnee.toISOString().split('T')[0] && r.heure === hr && r.coiffeurId === coiffeurSelectionne && r.statut !== 'annulée');
+    const box = document.createElement('div'); box.className = 'heure-case'; box.innerText = hr;
+    if (occupe) box.classList.add('desactive');
+    else {
+      box.onclick = () => {
+        heureSelectionnee = hr; document.querySelectorAll('.heure-case').forEach(c => c.classList.remove('selectionne'));
+        box.classList.add('selectionne'); document.getElementById('btn-suivant-3').disabled = false;
+      };
     }
-
-    // Vérification collision avec réservations distantes ou locales
-    const occupe = reservations.some(r => r.date === dateStr && r.heure === heureFormattee && parseInt(r.coiffeurId) === parseInt(coiffeurSelectionne) && r.statut !== 'annulée');
-
-    if (!dansPause) {
-      const divH = document.createElement('div');
-      divH.className = 'heure-case';
-      divH.innerText = heureFormattee;
-      if (occupe) {
-        divH.classList.add('desactive');
-        divH.style.cssText = "opacity:.2; pointer-events:none; text-decoration:line-through;";
-      } else {
-        divH.onclick = () => {
-          document.querySelectorAll('#grille-heures-dispos .heure-case').forEach(c => c.classList.remove('selectionne'));
-          divH.classList.add('selectionne');
-          heureSelectionnee = heureFormattee;
-          document.getElementById('btn-suivant-3').disabled = false;
-        };
-      }
-      zone.appendChild(divH);
-    }
-
-    mLoop += parseInt(config.intervalle);
-    if (mLoop >= 60) { hLoop += Math.floor(mLoop/60); mLoop = mLoop % 60; }
+    zone.appendChild(box); m += 30; if (m >= 60) { h++; m = 0; }
   }
 }
 
 function fabriquerRecapulaire() {
   const srvs = DB.get(DB.KEYS.SERVICES) || [];
-  const coifs = DB.get(DB.KEYS.COIFFEURS) || [];
-  
-  const servicesChoisis = srvs.filter(s => serviceSelectionnes.includes(s.id));
-  const coiffeurObj = coifs.find(c => c.id === coiffeurSelectionne);
-  const total = servicesChoisis.reduce((acc, s) => acc + s.tarif, 0);
-
+  const choisis = srvs.filter(s => serviceSelectionnes.includes(s.id));
+  const tot = choisis.reduce((a, s) => a + s.tarif, 0);
   document.getElementById('recap-final-texte').innerHTML = `
-    <div class="recap-ligne"><span>Coiffeur :</span><span class="valeur">${coiffeurObj ? coiffeurObj.nom : ''}</span></div>
-    <div class="recap-ligne"><span>Date du rdv :</span><span class="valeur">${dateSelectionnee.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</span></div>
-    <div class="recap-ligne"><span>Heure de passage :</span><span class="valeur">${heureSelectionnee}</span></div>
-    <div class="recap-ligne"><span>Prestations (${servicesChoisis.length}) :</span><span class="valeur" style="font-size:.85rem; text-align:right;">${servicesChoisis.map(s => s.nom).join(', ')}</span></div>
-    <div class="recap-total"><span>Montant total :</span><span style="color:var(--or-clair);">${total} DA</span></div>
+    <div class="recap-ligne"><span>Date :</span><span class="valeur">${dateSelectionnee?.toLocaleDateString('fr-FR')} à ${heureSelectionnee}</span></div>
+    <div class="recap-total"><span>Total :</span><span>${tot} DA</span></div>
   `;
 }
 
 function validerReservationFinale() {
   const nom = document.getElementById('client-nom').value.trim();
   const tel = document.getElementById('client-tel').value.trim();
-  const notes = document.getElementById('client-notes').value.trim();
-
-  if (!nom || !tel) { alert('Veuillez remplir votre nom et numéro de téléphone svp.'); return; }
-
+  if (!nom || !tel) return alert('Champs obligatoires.');
   const srvs = DB.get(DB.KEYS.SERVICES) || [];
-  const coifs = DB.get(DB.KEYS.COIFFEURS) || [];
-  const servicesChoisis = srvs.filter(s => serviceSelectionnes.includes(s.id));
-  const coiffeurObj = coifs.find(c => c.id === coiffeurSelectionne);
-  const total = servicesChoisis.reduce((acc, s) => acc + s.tarif, 0);
+  const choisis = srvs.filter(s => serviceSelectionnes.includes(s.id));
+  const tot = choisis.reduce((a, s) => a + s.tarif, 0);
+  const code = Math.floor(1000 + Math.random() * 9000);
 
-  const codeTicket = Math.floor(1000 + Math.random() * 9000);
-  
-  const nouvelleResa = {
-    id: Date.now(),
-    code: codeTicket,
-    clientNom: nom,
-    clientTel: tel,
-    clientNotes: notes,
-    coiffeurId: coiffeurSelectionne,
-    coiffeurNom: coiffeurObj ? coiffeurObj.nom : 'Indifféré',
-    date: dateSelectionnee.toISOString().split('T')[0],
-    heure: heureSelectionnee,
-    prestations: servicesChoisis.map(s => ({ nom: s.nom, tarif: s.tarif })),
-    total: total,
-    statut: 'confirmée'
+  const nR = {
+    id: Date.now(), code: code, clientNom: nom, clientTel: tel, clientNotes: document.getElementById('client-notes').value,
+    coiffeurId: coiffeurSelectionne, date: dateSelectionnee.toISOString().split('T')[0], heure: heureSelectionnee,
+    prestations: choisis.map(s => ({ nom: s.nom, tarif: s.tarif })), total: tot, statut: 'confirmée'
   };
 
-  // Envoi vers l'abstraction de stockage locale qui va aussi pousser sur le cloud via le module Firebase
-  const localResas = DB.get(DB.KEYS.RESERVATIONS) || [];
-  localResas.push(nouvelleResa);
-  DB.set(DB.KEYS.RESERVATIONS, localResas);
-
-  // Alimentation du ticket visuel de succès
-  document.getElementById('ticket-code').innerText = '#' + codeTicket;
-  document.getElementById('ticket-coiffeur').innerText = nouvelleResa.coiffeurNom;
-  document.getElementById('ticket-date').innerText = dateSelectionnee.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  document.getElementById('ticket-heure').innerText = heureSelectionnee;
-  document.getElementById('ticket-total').innerText = total + " DA";
-
+  const local = DB.get(DB.KEYS.RESERVATIONS) || []; local.push(nR); DB.set(DB.KEYS.RESERVATIONS, local);
+  document.getElementById('ticket-code').innerText = '#' + code;
+  document.getElementById('ticket-date').innerText = nR.date;
+  document.getElementById('ticket-heure').innerText = nR.heure;
+  document.getElementById('ticket-total').innerText = tot + " DA";
   passerEtape(5);
-  creerToast('<i class="fa-solid fa-circle-check" style="color:var(--vert)"></i> Votre rendez-vous est réservé !');
 }
 
-/* HISTORIQUE & GALERIE NATIVES */
-function chargerGalerie() {
-  const zone = document.getElementById('zone-galerie');
-  if (!zone) return;
-  const images = DB.get(DB.KEYS.GALERIE) || [];
-  zone.innerHTML = images.map(img => `<img src="${img}" alt="Réalisation Barber Pro">`).join('');
-}
-
+function chargerGalerie() { document.getElementById('zone-galerie').innerHTML = (DB.get(DB.KEYS.GALERIE) || []).map(i => `<img src="${i}">`).join(''); }
 function chargerHistorique() {
-  const zone = document.getElementById('zone-historique');
-  if (!zone) return;
-  const resas = DB.get(DB.KEYS.RESERVATIONS) || [];
-  
-  if (resas.length === 0) {
-    zone.innerHTML = `<p style="text-align:center; color:var(--gris); padding:20px;">Aucun ticket trouvé sur cet appareil.</p>`;
-    return;
-  }
-
-  // Trier du plus récent au plus ancien
-  resas.sort((a,b) => b.id - a.id);
-
-  zone.innerHTML = resas.map(r => `
-    <div class="item-historique">
-      <div>
-        <h4 style="color:var(--or-clair)">Code Ticket : #${r.code}</h4>
-        <p style="font-size:.85rem; margin-top:2px;">${r.prestations.map(p => p.nom).join(', ')}</p>
-        <small style="color:var(--gris); display:block; margin-top:4px;"><i class="fa-regular fa-calendar"></i> ${r.date} à ${r.heure} — ${r.coiffeurNom}</small>
-      </div>
-      <div style="text-align:right;">
-        <span class="badge-statut ${r.statut}">${r.statut}</span>
-        <strong style="display:block; margin-top:6px; font-family:var(--police-mono); font-size:.95rem;">${r.total} DA</strong>
-      </div>
-    </div>
+  document.getElementById('zone-historique').innerHTML = (DB.get(DB.KEYS.RESERVATIONS) || []).map(r => `
+    <div class="item-historique"><div><h4>Ticket #${r.code}</h4><small>${r.date} à ${r.heure}</small></div><div><strong>${r.total} DA</strong></div></div>
   `).join('');
 }
-
-/* INTERFACE UTILS */
-function ouvrirModal(html) {
-  document.getElementById('contenu-modal').innerHTML = `<button class="fermer-modal" onclick="fermerModal()"><i class="fa-solid fa-xmark"></i></button>${html}`;
-  document.getElementById('fond-modal').classList.remove('masque');
-}
-function fermerModal() { document.getElementById('fond-modal').classList.add('masque'); }
-
-function creerToast(messageHTML) {
-  let conteneurToast = document.getElementById('zone-toasts-global');
-  if (!conteneurToast) {
-    conteneurToast = document.createElement('div');
-    conteneurToast.id = 'zone-toasts-global';
-    conteneurToast.style.cssText = "position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:999; display:flex; flex-direction:column; gap:10px; align-items:center;";
-    document.body.appendChild(conteneurToast);
-  }
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.innerHTML = messageHTML;
-  conteneurToast.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
-}
-
-// Premier démarrage natif de sécurité
-window.addEventListener('DOMContentLoaded', () => {
-  chargerApercuServices();
-});
+window.addEventListener('DOMContentLoaded', chargerApercuServices);
 </script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+<script>
+window.addEventListener('load', async () => {
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const { getDatabase, ref, set, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
 
-  const firebaseConfig = {
-    databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/"
-  };
+    const firebaseConfig = { databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/" };
+    const app = initializeApp(firebaseConfig);
+    const dbCloud = getDatabase(app);
+    const noeudSalon = ref(dbCloud, 'barber_pro_db');
+    let blocSync = false;
 
-  // Initialisation asynchrone de Firebase
-  const app = initializeApp(firebaseConfig);
-  const dbCloud = getDatabase(app);
-  const noeudSalon = ref(dbCloud, 'barber_pro_db');
-
-  // Sécurité anti-boucle infinie pour éviter d'écraser la vue utilisateur
-  let synchronisationEnCours = false;
-
-  // On attend que la page soit intégralement prête pour greffer les triggers de synchronisation
-  window.addEventListener('load', () => {
     if (typeof DB !== 'undefined') {
-      
-      // 1. ÉCOUTE ET SYNCHRONISATION DU CLOUD VERS LE LOCALSTORAGE (RECEPTION)
       onValue(noeudSalon, (snapshot) => {
-        const donneesCloud = snapshot.val();
-        if (donneesCloud && !synchronisationEnCours) {
-          let modificationInterne = false;
-
-          Object.keys(donneesCloud).forEach(cle => {
-            const localDataStr = localStorage.getItem(cle);
-            const cloudDataStr = JSON.stringify(donneesCloud[cle]);
-            
-            if (localDataStr !== cloudDataStr) {
-              localStorage.setItem(cle, cloudDataStr);
-              modificationInterne = true;
-            }
+        const cloud = snapshot.val();
+        if (cloud && !blocSync) {
+          let modif = false;
+          Object.keys(cloud).forEach(k => {
+            if (localStorage.getItem(k) !== JSON.stringify(cloud[k])) { localStorage.setItem(k, JSON.stringify(cloud[k])); modif = true; }
           });
-
-          // Rafraîchir les composants à l'écran si des modifications ont eu lieu au salon
-          if (modificationInterne) {
-            if (typeof chargerApercuServices === 'function') chargerApercuServices();
-            if (document.getElementById('vue-reserver') && !document.getElementById('vue-reserver').classList.contains('masque')) {
-              if (typeof construireCalendrier === 'function' && dateSelectionnee) calculerHeuresDisponibles();
-            }
-          }
+          if (modif) { chargerApercuServices(); if (dateSelectionnee) calculerHeuresDisponibles(); }
         }
       });
 
-      // 2. SURCHARGE DE L'ÉCRITURE VERS LE CLOUD (ÉMISSION)
-      const ancienSet = DB.set;
-      DB.set = function(cle, valeur) {
-        synchronisationEnCours = true;
-        
-        // Sauvegarde sur le localStorage local de l'appareil
-        localStorage.setItem(cle, typeof valeur === 'object' ? JSON.stringify(valeur) : valeur);
-        
-        // Poussée immédiate vers l'arborescence Realtime Database de Firebase
-        set(ref(dbCloud, 'barber_pro_db/' + cle), valeur)
-          .then(() => { synchronisationEnCours = false; })
-          .catch(() => { synchronisationEnCours = false; });
+      const originalSet = DB.set;
+      DB.set = function(cle, val) {
+        blocSync = true; originalSet(cle, val);
+        set(ref(dbCloud, 'barber_pro_db/' + cle), val).finally(() => blocSync = false);
       };
     }
-  });
-</script>
-<script>
-/* ---------- PWA : service worker registration ---------- */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
-}
+  } catch(e) { console.error("Erreur Cloud:", e); }
+});
 </script>
 </body>
 </html>
