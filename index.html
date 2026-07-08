@@ -183,8 +183,6 @@ body.light header.entete { background: rgba(245,243,238,.85); }
 .badge-statut.annulée { background: rgba(226,87,76,.15); color: var(--rouge); }
 
 footer.pied { border-top: 1px solid var(--noir-bord); padding: 40px 20px 26px; text-align:center; color: var(--gris); font-size:.85rem; margin-top: 50px; }
-.toast { display:inline-flex; align-items:center; gap:12px; background:var(--noir-carte-2); border:1px solid var(--or); padding:14px 22px; border-radius:999px; box-shadow:var(--ombre); font-size:.9rem; animation: glisse-toast .3s ease; }
-@keyframes glisse-toast { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
 .masque { display: none !important; }
 </style>
 </head>
@@ -206,7 +204,6 @@ footer.pied { border-top: 1px solid var(--noir-bord); padding: 40px 20px 26px; t
     </nav>
     <div style="display:flex; gap:10px; align-items:center;">
       <button class="btn-contour btn-petit" onclick="basculerTheme()" style="border-radius:50%; width:36px; height:36px; padding:0;"><i class="fa-solid fa-moon"></i></button>
-      <button class="btn-or btn-petit masque" id="btn-installer">Installer</button>
       <button class="btn-menu-mobile" onclick="basculerMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -308,47 +305,63 @@ footer.pied { border-top: 1px solid var(--noir-bord); padding: 40px 20px 26px; t
 <footer class="pied"><p>© 2026 BARBER PRO DZ. Tous droits réservés.</p></footer>
 
 <script>
+// --- LOGIQUE BASE DE DONNÉES LOCALE ---
 const DB = {
   KEYS: { SERVICES: 'services', COIFFEURS: 'coiffeurs', HORAIRES: 'horaires', RESERVATIONS: 'reservations', GALERIE: 'galerie' },
   get(cle) { const v = localStorage.getItem(cle); try { return v ? JSON.parse(v) : null; } catch { return v; } },
-  set(cle, val) { localStorage.setItem(cle, typeof val === 'object' ? JSON.stringify(val) : val); },
+  set(cle, val) { 
+    localStorage.setItem(cle, typeof val === 'object' ? JSON.stringify(val) : val);
+    // On notifie Firebase via un événement si besoin, mais ici le script Firebase surcharge DB.set
+  },
   seed() {
-    if (!localStorage.getItem(this.KEYS.SERVICES)) {
+    if (!this.get(this.KEYS.SERVICES)) {
       this.set(this.KEYS.SERVICES, [
         { id: 1, nom: "Coupe Classique + Barbe", categorie: "Cheveux", tarif: 1200, duree: 45 },
         { id: 2, nom: "Dégradé Américain / Taper", categorie: "Cheveux", tarif: 800, duree: 30 },
         { id: 3, nom: "Soin Visage Black Mask", categorie: "Soins", tarif: 1000, duree: 20 }
       ]);
     }
-    if (!localStorage.getItem(this.KEYS.COIFFEURS)) {
+    if (!this.get(this.KEYS.COIFFEURS)) {
       this.set(this.KEYS.COIFFEURS, [
         { id: 1, nom: "Yacine", specialite: "Expert Dégradés", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200" },
         { id: 2, nom: "Karim", specialite: "Spécialiste Barbe", photo: "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?auto=format&fit=crop&q=80&w=200" }
       ]);
     }
-    if (!localStorage.getItem(this.KEYS.HORAIRES)) this.set(this.KEYS.HORAIRES, { debut: "09:00", fin: "22:00", pauseDebut: "13:00", pauseFin: "14:00", intervalle: 30 });
-    if (!localStorage.getItem(this.KEYS.GALERIE)) this.set(this.KEYS.GALERIE, ["https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80"]);
-    if (!localStorage.getItem(this.KEYS.RESERVATIONS)) this.set(this.KEYS.RESERVATIONS, []);
+    if (!this.get(this.KEYS.HORAIRES)) this.set(this.KEYS.HORAIRES, { debut: "09:00", fin: "22:00", pauseDebut: "13:00", pauseFin: "14:00", intervalle: 30 });
+    if (!this.get(this.KEYS.GALERIE)) this.set(this.KEYS.GALERIE, ["https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80"]);
+    if (!this.get(this.KEYS.RESERVATIONS)) this.set(this.KEYS.RESERVATIONS, []);
   }
 };
-DB.seed();
 
+// --- VARIABLES GLOBALES ---
 let serviceSelectionnes = [], coiffeurSelectionne = null, dateSelectionnee = null, heureSelectionnee = null;
 let moisCourant = new Date().getMonth(), anneeCourante = new Date().getFullYear();
 
+// --- NAVIGATION ---
 function changerOnglet(id) {
   document.querySelectorAll('.onglet-vue').forEach(el => el.classList.add('masque'));
   document.querySelectorAll('.nav-liens a').forEach(el => el.classList.remove('actif'));
   document.getElementById('vue-' + id)?.classList.remove('masque');
+  document.querySelectorAll(`.nav-liens a[href="#${id}"]`).forEach(a => a.classList.add('actif'));
   document.getElementById('liens-menu').classList.remove('ouvert');
+  
   if (id === 'accueil') chargerApercuServices();
   if (id === 'reserver') initialiserEtapeReservation();
   if (id === 'galerie') chargerGalerie();
   if (id === 'historique') chargerHistorique();
 }
+
+function rafraichirInterface() {
+  chargerApercuServices();
+  chargerGalerie();
+  chargerHistorique();
+  if (dateSelectionnee) calculerHeuresDisponibles();
+}
+
 function basculerMenu() { document.getElementById('liens-menu').classList.toggle('ouvert'); }
 function basculerTheme() { document.body.classList.toggle('light'); }
 
+// --- LOGIQUE RÉSERVATION ---
 function chargerApercuServices() {
   const zone = document.getElementById('apercu-services'); if (!zone) return;
   zone.innerHTML = (DB.get(DB.KEYS.SERVICES) || []).map(s => `
@@ -360,74 +373,99 @@ function chargerApercuServices() {
 }
 
 function initialiserEtapeReservation() {
-  serviceSelectionnes = []; coiffeurSelectionne = null; dateSelectionnee = null; heureSelectionnee = null; passerEtape(1);
+  serviceSelectionnes = []; coiffeurSelectionne = null; dateSelectionnee = null; heureSelectionnee = null; 
+  passerEtape(1);
+  
   document.getElementById('liste-services-resa').innerHTML = (DB.get(DB.KEYS.SERVICES) || []).map(s => `
     <div class="carte selectionnable" id="srv-card-${s.id}" onclick="selectionnerService(${s.id})">
       <h3>${s.nom}</h3><p>${s.tarif} DA - ${s.duree} min</p>
     </div>
   `).join('');
+  
   document.getElementById('liste-coiffeurs-resa').innerHTML = (DB.get(DB.KEYS.COIFFEURS) || []).map(c => `
     <div class="carte carte-coiffeur selectionnable" id="coif-card-${c.id}" onclick="selectionnerCoiffeur(${c.id})">
       <img src="${c.photo}"><h3>${c.nom}</h3><p>${c.specialite}</p>
     </div>
   `).join('');
+  
   construireCalendrier();
 }
 
 function selectionnerService(id) {
-  const idx = serviceSelectionnes.indexOf(id); if (idx > -1) serviceSelectionnes.splice(idx, 1); else serviceSelectionnes.push(id);
+  const idx = serviceSelectionnes.indexOf(id); 
+  if (idx > -1) serviceSelectionnes.splice(idx, 1); else serviceSelectionnes.push(id);
   document.querySelectorAll('#liste-services-resa .carte').forEach(c => c.classList.remove('selectionnee'));
   serviceSelectionnes.forEach(sid => document.getElementById('srv-card-' + sid)?.classList.add('selectionnee'));
   document.getElementById('btn-suivant-1').disabled = (serviceSelectionnes.length === 0);
 }
+
 function selectionnerCoiffeur(id) {
-  coiffeurSelectionne = id; document.querySelectorAll('#liste-coiffeurs-resa .carte').forEach(c => c.classList.remove('selectionnee'));
-  document.getElementById('coif-card-' + id)?.classList.add('selectionnee'); document.getElementById('btn-suivant-2').disabled = false;
+  coiffeurSelectionne = id; 
+  document.querySelectorAll('#liste-coiffeurs-resa .carte').forEach(c => c.classList.remove('selectionnee'));
+  document.getElementById('coif-card-' + id)?.classList.add('selectionnee'); 
+  document.getElementById('btn-suivant-2').disabled = false;
 }
+
 function passerEtape(n) {
   document.querySelectorAll('.zone-etape').forEach(z => z.classList.add('masque'));
   document.getElementById('bloc-etape-' + n).classList.remove('masque');
-  document.querySelectorAll('.etape-puce').forEach((p, i) => { p.className = 'etape-puce' + (i+1===n ? ' active' : (i+1<n ? ' fait' : '')); });
+  document.querySelectorAll('.etape-puce').forEach((p, i) => { 
+    p.className = 'etape-puce' + (i+1===n ? ' active' : (i+1<n ? ' fait' : '')); 
+  });
   if (n === 4) fabriquerRecapulaire();
 }
 
-function construirCalendrier() {
+function construireCalendrier() {
   const zone = document.getElementById('grille-calendrier'); if (!zone) return;
   const pivot = new Date(anneeCourante, moisCourant, 1);
   document.getElementById('titre-mois-annee').innerText = pivot.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   zone.innerHTML = '';
-  const total = new Date(anneeCourante, moisCourant + 1, 0).getDate();
-  for (let j = 1; j <= total; j++) {
+  
+  const totalJours = new Date(anneeCourante, moisCourant + 1, 0).getDate();
+  for (let j = 1; j <= totalJours; j++) {
     const d = new Date(anneeCourante, moisCourant, j);
     const box = document.createElement('div'); box.className = 'jour-case'; box.innerText = j;
-    if (d < new Date().setHours(0,0,0,0) || d.getDay() === 5) box.classList.add('desactive');
-    else {
+    
+    if (d < new Date().setHours(0,0,0,0) || d.getDay() === 5) {
+      box.classList.add('desactive');
+    } else {
       box.onclick = () => {
-        dateSelectionnee = d; document.querySelectorAll('.jour-case').forEach(c => c.classList.remove('selectionne'));
-        box.classList.add('selectionne'); calculerHeuresDisponibles();
+        dateSelectionnee = d; 
+        document.querySelectorAll('.jour-case').forEach(c => c.classList.remove('selectionne'));
+        box.classList.add('selectionne'); 
+        calculerHeuresDisponibles();
       };
     }
     zone.appendChild(box);
   }
 }
-function naviguerMois(dir) { moisCourant += dir; construirCalendrier(); }
+
+function naviguerMois(dir) { moisCourant += dir; construireCalendrier(); }
 
 function calculerHeuresDisponibles() {
-  const zone = document.getElementById('grille-heures-dispos'); zone.innerHTML = '';
-  const cfg = DB.get(DB.KEYS.HORAIRES); const resas = DB.get(DB.KEYS.RESERVATIONS) || [];
+  const zone = document.getElementById('grille-heures-dispos'); if(!zone) return;
+  zone.innerHTML = '';
+  const resas = DB.get(DB.KEYS.RESERVATIONS) || [];
   let h = 9, m = 0;
+  
   while (h < 22) {
     const hr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
     const occupe = resas.some(r => r.date === dateSelectionnee.toISOString().split('T')[0] && r.heure === hr && r.coiffeurId === coiffeurSelectionne && r.statut !== 'annulée');
-    const box = document.createElement('div'); box.className = 'heure-case'; box.innerText = hr;
-    if (occupe) box.classList.add('desactive');
-    else {
+    
+    const box = document.createElement('div'); 
+    box.className = 'heure-case' + (occupe ? ' desactive' : ''); 
+    box.innerText = hr;
+    
+    if (!occupe) {
       box.onclick = () => {
-        heureSelectionnee = hr; document.querySelectorAll('.heure-case').forEach(c => c.classList.remove('selectionne'));
-        box.classList.add('selectionne'); document.getElementById('btn-suivant-3').disabled = false;
+        heureSelectionnee = hr; 
+        document.querySelectorAll('.heure-case').forEach(c => c.classList.remove('selectionne'));
+        box.classList.add('selectionne'); 
+        document.getElementById('btn-suivant-3').disabled = false;
       };
     }
-    zone.appendChild(box); m += 30; if (m >= 60) { h++; m = 0; }
+    zone.appendChild(box); 
+    m += 30; if (m >= 60) { h++; m = 0; }
   }
 }
 
@@ -445,6 +483,7 @@ function validerReservationFinale() {
   const nom = document.getElementById('client-nom').value.trim();
   const tel = document.getElementById('client-tel').value.trim();
   if (!nom || !tel) return alert('Champs obligatoires.');
+  
   const srvs = DB.get(DB.KEYS.SERVICES) || [];
   const choisis = srvs.filter(s => serviceSelectionnes.includes(s.id));
   const tot = choisis.reduce((a, s) => a + s.tarif, 0);
@@ -456,7 +495,10 @@ function validerReservationFinale() {
     prestations: choisis.map(s => ({ nom: s.nom, tarif: s.tarif })), total: tot, statut: 'confirmée'
   };
 
-  const local = DB.get(DB.KEYS.RESERVATIONS) || []; local.push(nR); DB.set(DB.KEYS.RESERVATIONS, local);
+  const local = DB.get(DB.KEYS.RESERVATIONS) || []; 
+  local.push(nR); 
+  DB.set(DB.KEYS.RESERVATIONS, local);
+
   document.getElementById('ticket-code').innerText = '#' + code;
   document.getElementById('ticket-date').innerText = nR.date;
   document.getElementById('ticket-heure').innerText = nR.heure;
@@ -464,57 +506,81 @@ function validerReservationFinale() {
   passerEtape(5);
 }
 
-function chargerGalerie() { document.getElementById('zone-galerie').innerHTML = (DB.get(DB.KEYS.GALERIE) || []).map(i => `<img src="${i}">`).join(''); }
+function chargerGalerie() { 
+  const zone = document.getElementById('zone-galerie');
+  if(zone) zone.innerHTML = (DB.get(DB.KEYS.GALERIE) || []).map(i => `<img src="${i}">`).join(''); 
+}
+
 function chargerHistorique() {
-  document.getElementById('zone-historique').innerHTML = (DB.get(DB.KEYS.RESERVATIONS) || []).map(r => `
-    <div class="item-historique"><div><h4>Ticket #${r.code}</h4><small>${r.date} à ${r.heure}</small></div><div><strong>${r.total} DA</strong></div></div>
+  const zone = document.getElementById('zone-historique');
+  if(zone) zone.innerHTML = (DB.get(DB.KEYS.RESERVATIONS) || []).reverse().map(r => `
+    <div class="item-historique">
+      <div><h4>Ticket #${r.code}</h4><small>${r.date} à ${r.heure}</small></div>
+      <div><strong>${r.total} DA</strong></div>
+    </div>
   `).join('');
 }
-window.addEventListener('DOMContentLoaded', chargerApercuServices);
+
+// Initialisation au chargement
+window.addEventListener('DOMContentLoaded', () => {
+  DB.seed();
+  chargerApercuServices();
+});
 </script>
 
-<script>
-window.addEventListener('load', async () => {
-  try {
-    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-    const { getDatabase, ref, set, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+<script type="module">
+// --- SYNCHRONISATION FIREBASE ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDsjrxUlmUrko9oKADYzgOoHC_qfClEP7Y",
-      authDomain: "barber-pro-dz.firebaseapp.com",
-      databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "barber-pro-dz",
-      storageBucket: "barber-pro-dz.firebasestorage.app",
-      messagingSenderId: "1011402409421",
-      appId: "1:1011402409421:web:218f72ccf7937cfeb0b084",
-      measurementId: "G-NPY5N37WZ5"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyDsjrxUlmUrko9oKADYzgOoHC_qfClEP7Y",
+  authDomain: "barber-pro-dz.firebaseapp.com",
+  databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "barber-pro-dz",
+  storageBucket: "barber-pro-dz.firebasestorage.app",
+  messagingSenderId: "1011402409421",
+  appId: "1:1011402409421:web:218f72ccf7937cfeb0b084",
+  measurementId: "G-NPY5N37WZ5"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const dbCloud = getDatabase(app);
-    const noeudSalon = ref(dbCloud, 'barber_pro_db');
-    let blocSync = false;
+const app = initializeApp(firebaseConfig);
+const dbCloud = getDatabase(app);
+const salonRef = ref(dbCloud, 'barber_pro_db');
+let isSyncing = false;
 
-    if (typeof DB !== 'undefined') {
-      onValue(noeudSalon, (snapshot) => {
-        const cloud = snapshot.val();
-        if (cloud && !blocSync) {
-          let modif = false;
-          Object.keys(cloud).forEach(k => {
-            if (localStorage.getItem(k) !== JSON.stringify(cloud[k])) { localStorage.setItem(k, JSON.stringify(cloud[k])); modif = true; }
-          });
-          if (modif) { chargerApercuServices(); if (dateSelectionnee) calculerHeuresDisponibles(); }
-        }
-      });
-
-      const originalSet = DB.set;
-      DB.set = function(cle, val) {
-        blocSync = true; originalSet(cle, val);
-        set(ref(dbCloud, 'barber_pro_db/' + cle), val).finally(() => blocSync = false);
-      };
-    }
-  } catch(e) { console.error("Erreur Cloud Client:", e); }
+// 1. ÉCOUTER LE CLOUD
+onValue(salonRef, (snapshot) => {
+  if (isSyncing) return;
+  const cloudData = snapshot.val();
+  if (cloudData) {
+    let hasChanged = false;
+    Object.keys(cloudData).forEach(key => {
+      const localStr = localStorage.getItem(key);
+      const cloudStr = JSON.stringify(cloudData[key]);
+      if (localStr !== cloudStr) {
+        localStorage.setItem(key, cloudStr);
+        hasChanged = true;
+      }
+    });
+    if (hasChanged) rafraichirInterface();
+  } else {
+    // Si le Cloud est vide, on l'initialise avec nos données locales
+    Object.keys(DB.KEYS).forEach(k => {
+      const val = DB.get(DB.KEYS[k]);
+      if(val) set(ref(dbCloud, 'barber_pro_db/' + DB.KEYS[k]), val);
+    });
+  }
 });
+
+// 2. SURCHARGER DB.SET POUR ENVOYER AU CLOUD
+const originalSet = DB.set;
+DB.set = function(cle, val) {
+  isSyncing = true;
+  originalSet.call(DB, cle, val); // Mise à jour locale
+  set(ref(dbCloud, 'barber_pro_db/' + cle), val) // Mise à jour Cloud
+    .finally(() => { isSyncing = false; });
+};
 </script>
 </body>
 </html>
