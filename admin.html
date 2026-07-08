@@ -227,7 +227,17 @@ window.addEventListener('load', async () => {
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
     const { getDatabase, ref, set, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
 
-    const firebaseConfig = { databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app/" };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsjrxUlmUrko9oKADYzgOoHC_qfClEP7Y",
+      authDomain: "barber-pro-dz.firebaseapp.com",
+      databaseURL: "https://barber-pro-dz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "barber-pro-dz",
+      storageBucket: "barber-pro-dz.firebasestorage.app",
+      messagingSenderId: "1011402409421",
+      appId: "1:1011402409421:web:218f72ccf7937cfeb0b084",
+      measurementId: "G-NPY5N37WZ5"
+    };
+
     const app = initializeApp(firebaseConfig);
     const dbCloud = getDatabase(app);
     const noeudSalon = ref(dbCloud, 'barber_pro_db');
